@@ -11,3 +11,7 @@ easyrsa_env:
     EASYRSA_DIGEST: "sha512"       
     EASYRSA_REQ_CN: ""
 
+LDAP_URL: ""
+LDAP_DN: "" 
+LDAP_ADMIN_PASSWD: "" 
+LDAP_BASE_DN: ""

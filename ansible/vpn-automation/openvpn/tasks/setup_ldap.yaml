@@ -7,3 +7,23 @@
   ansible.builtin.apt:
     name:
       - openvpn-auth-ldap
+
+- name: Paste OpenLDAP config file
+  ansible.builtin.template:
+    src: ldap.conf.j2
+    dest: /etc/openvpn/auth/ldap.conf
+
+- name: Aims server to OpenLDAP authentication
+  ansible.builtin.blockinfile:
+    path: /etc/openvpn/server.conf
+    append_newline: true
+    block: |
+      plugin /usr/lib/openvpn/openvpn-auth-ldap.so /etc/openvpn/auth/ldap.conf
+      client-cert-not-required
+      username-as-common-name
+
+- name: Restart OpenVPN server
+  ansible.builtin.service:
+    name: openvpn
+    enabled: true
+    state: restarted
