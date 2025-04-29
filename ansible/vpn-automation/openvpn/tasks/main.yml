@@ -1,0 +1,17 @@
+#SPDX-License-Identifier: MIT-0
+---
+- name: Prepare OpenVPN network on host 
+  ansible.builtin.import_tasks: vpn_network.yml  
+  tags:
+    - network
+
+- name: Install and configure OpenVPN
+  ansible.builtin.import_tasks: vpn_host.yml
+  tags:
+    - configure
+    - deploy
+
+- name: Setup OpenVPN+LDAP authentication
+  ansible.builtin.import_tasks: setup_ldap.yml
+  tags:
+    - ldap-deploy

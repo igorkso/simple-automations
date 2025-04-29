@@ -1,0 +1,15 @@
+---
+- name: Ensure network-manager is installed
+  ansible.builtin.apt:
+    name: network-manager
+    update_cache: true
+
+- name: Create VLANS
+  community.general.nmcli:
+    type: vlan
+    conn_name: "{{ hostvars[host].ansible_default_ipv4.interface }}.{{ vlan_id }}"
+    ip4: "{{ node_ipv4.rsplit('.') }}/{{ ipv4_netmask }}"
+
+
+
+    

@@ -1,0 +1,9 @@
+---
+- name: Update cache
+  ansible.builtin.apt:
+    update_cache: true
+
+- name: Install dependencies
+  ansible.builtin.apt:
+    name:
+      - openvpn-auth-ldap

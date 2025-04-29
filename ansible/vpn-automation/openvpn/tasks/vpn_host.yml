@@ -1,0 +1,43 @@
+---
+- name: Update cache and apt
+  ansible.builtin.apt:
+    update_cache: true
+
+- name: Install OpenVPN and its dependencies
+  ansible.builtin.apt:
+    name:
+      - openvpn
+      - easy-rsa
+      - libssl-dev
+      - openssl
+      - zip
+
+- name: Ensure ip forwarding is allowed
+  sysctl: 
+    name: "net.ipv4.ip_forward" 
+    value: 1 
+    sysctl_set: yes 
+    state: present
+
+- name: Check if Easy-rsa dir exists
+  stat:
+    path: /etc/openvpn/easy-rsa
+  register: easyrsa_state
+
+- name: Set up the Certificate Authority
+  ansible.builtin.command: make-cadir /etc/openvpn/easy-rsa
+  when: not easyrsa_state.stat.exists  
+
+- name: Initialize Public Key Infrastructure (PKI)
+  ansible.builtin.command:
+    chdir: /etc/openvpn/easy-rsa
+    cmd: ./easyrsa init-pki
+
+- name: Set up server Keys and Certificates
+  ansible.builtin.shell: |
+    ./easyrsa --batch build-ca nopass
+    ./easyrsa --batch gen-req sttpmob nopass
+  args:
+    chdir: /etc/openvpn/easy-rsa
+  environment: "{{ easyrsa_env }}"
+  when: not lookup('file', '/etc/openvpn/pki/ca.crt', errors='ignore')

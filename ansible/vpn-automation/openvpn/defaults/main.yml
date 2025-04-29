@@ -1,0 +1,13 @@
+#SPDX-License-Identifier: MIT-0
+---
+easyrsa_env:
+    EASYRSA_REQ_COUNTRY: ""    
+    EASYRSA_REQ_PROVINCE: ""
+    EASYRSA_REQ_CITY: ""
+    EASYRSA_REQ_ORG: ""
+    EASYRSA_REQ_EMAIL: ""     
+    EASYRSA_REQ_OU: "" 
+    EASYRSA_ALGO: "rsa"     
+    EASYRSA_DIGEST: "sha512"       
+    EASYRSA_REQ_CN: ""
+

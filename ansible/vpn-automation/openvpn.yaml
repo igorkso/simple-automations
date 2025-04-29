@@ -1,0 +1,7 @@
+---
+- name: Setup and deploy OpenVPN
+  hosts: internal 
+  gather_facts: yes 
+  become: true 
+  roles:
+    - openvpn
